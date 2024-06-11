@@ -10,6 +10,10 @@ func FetchUser(db repository.Repository, id string) (*domain.User, error) {
 	return db.GetUserById(id)
 }
 
+func FetchUserWithDelay(db repository.Repository, id string) (*domain.User, error) {
+	return db.GetUserByIDWithDelay(id)
+}
+
 func FetchAllUsers(db repository.Repository) ([]domain.User, error) {
 	return db.GetAllUsers()
 }

@@ -3,6 +3,7 @@ package application_test
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/silvano-paulino/internal/application"
 	"github.com/silvano-paulino/internal/domain"
@@ -29,6 +30,15 @@ func (m *MockDatabase) GetAllUsers() ([]domain.User, error) {
 	return m.MockAllUserData, nil
 }
 
+func (m *MockDatabase) GetUserByIDWithDelay(id string) (*domain.User, error) {
+	time.Sleep(2 * time.Second) // Simula um delay
+	user, exists := m.MockUserData[id]
+	if !exists {
+		return nil, errors.New("user not found")
+	}
+	return user, nil
+}
+
 func TestFetchUser(t *testing.T) {
 	t.Run("must exists an user", func(t *testing.T) {
 		// Arrange
@@ -53,17 +63,38 @@ func TestFetchUser(t *testing.T) {
 		mockRepo := &MockDatabase{
 			MockUserData: map[string]*domain.User{},
 		}
-	
+
 		// Act
 		user, err := application.FetchUser(mockRepo, "2")
-	
+
 		// Assert
 		if err == nil {
 			t.Fatal("Expected an error, but got nil")
 		}
-	
+
 		if user != nil {
 			t.Errorf("Expected nil user, but got %v", user)
+		}
+	})
+
+	t.Run("must handle repository delay", func(t *testing.T) {
+		// Arrange
+		mockRepo := &MockDatabase{
+			MockUserData: map[string]*domain.User{
+				"4": {Id: "4", Name: "Silvano Paulino"},
+			},
+		}
+
+		// Act
+		user, err := application.FetchUserWithDelay(mockRepo, "4")
+
+		// Assert
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+
+		if user == nil || user.Id != "4" {
+			t.Errorf("Expected user with ID '1', but got %v", user)
 		}
 	})
 
@@ -72,15 +103,15 @@ func TestFetchUser(t *testing.T) {
 		mockRepo := &MockDatabase{
 			MockUserData: map[string]*domain.User{},
 		}
-	
+
 		// Act
 		user, err := application.FetchUser(mockRepo, "")
-	
+
 		// Assert
 		if err == nil {
 			t.Fatal("Expected an error for empty ID, but got nil")
 		}
-	
+
 		if user != nil {
 			t.Errorf("Expected nil user for empty ID, but got %v", user)
 		}
@@ -157,6 +188,5 @@ func TestFetchUser(t *testing.T) {
 		}
 
 	})
-
 
 }
