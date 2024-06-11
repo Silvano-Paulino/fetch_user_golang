@@ -1,5 +1,6 @@
-Compilar e Executar o CLI
-Compile o projeto para criar o executável e utilize o novo comando:
+##Compilar e Executar o CLI
+
+###Compile o projeto para criar o executável e utilize o novo comando:
 1. Navegue até o diretório do projeto:
 cd /path/to/your/project
 
