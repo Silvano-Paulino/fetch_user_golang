@@ -1,16 +1,22 @@
 package application
 
 import (
+	"errors"
+	"time"
+
 	"github.com/silvano-paulino/internal/domain"
 	"github.com/silvano-paulino/internal/repository"
 )
 
-// Função que utiliza o Database para buscar um usuário por ID.
 func FetchUser(db repository.Repository, id string) (*domain.User, error) {
+	if id == "" {
+		return nil, errors.New("empty user ID")
+	}
 	return db.GetUserById(id)
 }
 
 func FetchUserWithDelay(db repository.Repository, id string) (*domain.User, error) {
+	time.Sleep(2 * time.Second)
 	return db.GetUserByIDWithDelay(id)
 }
 
