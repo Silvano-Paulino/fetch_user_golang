@@ -1,25 +1,35 @@
-##Compilar e Executar o CLI
+# Como executar o projecto
 
-###Compile o projeto para criar o executável e utilize o novo comando:
+## Compile o projeto para criar o executável e utilize o novo comando:
+
 1. Navegue até o diretório do projeto:
+``` 
 cd /path/to/your/project
+``` 
 
 2. Compile o código:
+``` 
 go build -o usercli
+``` 
 
 3. Verifique o executável:
-Você deverá ver um arquivo usercli ou usercli.exe no diretório do projeto.
 
-4. Execute o CLI:  
-
-* Para buscar um usuário use os seguintes comandos: 
+- Você deverá ver um arquivo usercli ou usercli.exe no diretório do projeto.
 
 
-Buscar um usuário específico:
-./usercli fetchuser --id 1
+## Para buscar um usuário use os seguintes comandos: 
 
-Buscar todos os usuários:
+- Buscar um usuário específico:
+``` 
+./usercli fetchuser --id 1  
+```
+
+- Buscar todos os usuários:
+``` 
 ./usercli fetchallusers
+``` 
 
-Buscar um usuário com atraso simulado:
+- Buscar um usuário com atraso simulado:
+``` 
 ./usercli fetchuserwithdelay --id 4
+``` 
