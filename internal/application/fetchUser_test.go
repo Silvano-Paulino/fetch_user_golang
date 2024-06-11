@@ -42,8 +42,8 @@ func TestFetchUser(t *testing.T) {
 		user, _ := application.FetchUser(mockRepo, "1")
 
 		// assert
-		if user.Name == "" {
-			t.Error("Expected 'user'")
+		if user.Id != "1" {
+			t.Error("Expected user")
 		}
 
 	})
@@ -64,13 +64,17 @@ func TestFetchUser(t *testing.T) {
 			t.Fatalf("Expeted no error, got %v", err)
 		}
 
+		if user.Id != "1" {
+			t.Errorf("Expected '1', got %s", user.Id)
+		}
+
 		if user.Name != "Silvano Paulino" {
 			t.Errorf("Expected 'Silvano Paulino', got %s", user.Name)
 		}
 	})
 
 	t.Run("must fetch all users", func(t *testing.T) {
-		// Arrange 
+		// Arrange
 		mockRepo := &MockDatabase{
 			MockAllUserData: []domain.User{
 				{Id: "1", Name: "John Doe"},
@@ -93,7 +97,7 @@ func TestFetchUser(t *testing.T) {
 	})
 
 	t.Run("Verify all data of users", func(t *testing.T) {
-		// Arrange 
+		// Arrange
 		mockRepo := &MockDatabase{
 			MockAllUserData: []domain.User{
 				{Id: "1", Name: "John Doe"},
@@ -113,6 +117,6 @@ func TestFetchUser(t *testing.T) {
 				t.Errorf("expeted %s, got %s", expectedUsers[i], user.Name)
 			}
 		}
-		
+
 	})
 }
