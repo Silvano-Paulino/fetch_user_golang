@@ -67,6 +67,25 @@ func TestFetchUser(t *testing.T) {
 		}
 	})
 
+	t.Run("must handle empty ID", func(t *testing.T) {
+		// Arrange
+		mockRepo := &MockDatabase{
+			MockUserData: map[string]*domain.User{},
+		}
+	
+		// Act
+		user, err := application.FetchUser(mockRepo, "")
+	
+		// Assert
+		if err == nil {
+			t.Fatal("Expected an error for empty ID, but got nil")
+		}
+	
+		if user != nil {
+			t.Errorf("Expected nil user for empty ID, but got %v", user)
+		}
+	})
+
 	t.Run("must fetch an user", func(t *testing.T) {
 		// Arrange
 		mockRepo := &MockDatabase{
