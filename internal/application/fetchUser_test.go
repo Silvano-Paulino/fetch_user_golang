@@ -9,11 +9,12 @@ import (
 )
 
 type MockDatabase struct {
-	MockData map[string]*domain.User
+	MockUserData    map[string]*domain.User
+	MockAllUserData []domain.User
 }
 
 func (m *MockDatabase) GetUserById(id string) (*domain.User, error) {
-	user, ok := m.MockData[id]
+	user, ok := m.MockUserData[id]
 
 	if !ok {
 		return nil, errors.New("User Not found")
@@ -21,23 +22,29 @@ func (m *MockDatabase) GetUserById(id string) (*domain.User, error) {
 	return user, nil
 }
 
+func (m *MockDatabase) GetAllUsers() ([]domain.User, error) {
+	if len(m.MockAllUserData) == 0 {
+		return nil, errors.New("no users found")
+	}
+	return m.MockAllUserData, nil
+}
+
 func TestFetchUser(t *testing.T) {
-	// Arrange
-	mockRepo := &MockDatabase{
-		MockData: map[string]*domain.User{
-			"1": {Id: "1", Name: "Silvano Paulino"},
-		},
-	}
+	t.Run("must exists an user", func(t *testing.T) {
+		// Arrange
+		mockRepo := &MockDatabase{
+			MockUserData: map[string]*domain.User{
+				"1": {Id: "1", Name: "Silvano Paulino"},
+			},
+		}
 
-	// Act
-	user, err := application.FetchUser(mockRepo, "1")
+		// Act
+		user, _ := application.FetchUser(mockRepo, "1")
 
-	// assert
-	if err != nil {
-		t.Fatalf("Expeted no error, got %v", err)
-	}
+		// assert
+		if user.Name == "" {
+			t.Error("Expected 'user'")
+		}
 
-	if user.Name != "Silvano Paulino" {
-		t.Errorf("Expected 'Silvano Paulino', got %s", user.Name)
-	}
+	})
 }

@@ -9,3 +9,7 @@ import (
 func FetchUser(db repository.Repository, id string) (*domain.User, error) {
 	return db.GetUserById(id)
 }
+
+func FetchAllUsers(db repository.Repository) ([]domain.User, error) {
+	return db.GetAllUsers()
+}
