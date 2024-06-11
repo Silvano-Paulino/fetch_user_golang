@@ -69,5 +69,26 @@ func TestFetchUser(t *testing.T) {
 		}
 	})
 
-	
+	t.Run("must fetch all users", func(t *testing.T) {
+		// Arrange 
+		mockRepo := &MockDatabase{
+			MockAllUserData: []domain.User{
+				{Id: "1", Name: "John Doe"},
+				{Id: "2", Name: "Jane Smith"},
+				{Id: "3", Name: "Alice Johnson"},
+			},
+		}
+
+		// Act
+		users, err := application.FetchAllUsers(mockRepo)
+
+		// Assert
+		if err != nil {
+			t.Fatalf("expeccted an error, got %v", err)
+		}
+
+		if len(users) != 3 {
+			t.Errorf("expeted 3 users, got %d", len(users))
+		}
+	})
 }
