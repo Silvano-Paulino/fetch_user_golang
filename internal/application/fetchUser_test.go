@@ -47,4 +47,27 @@ func TestFetchUser(t *testing.T) {
 		}
 
 	})
+
+	t.Run("must fetch an user", func(t *testing.T) {
+		// Arrange
+		mockRepo := &MockDatabase{
+			MockUserData: map[string]*domain.User{
+				"1": {Id: "1", Name: "Silvano Paulino"},
+			},
+		}
+
+		// Act
+		user, err := application.FetchUser(mockRepo, "1")
+
+		// assert
+		if err != nil {
+			t.Fatalf("Expeted no error, got %v", err)
+		}
+
+		if user.Name != "Silvano Paulino" {
+			t.Errorf("Expected 'Silvano Paulino', got %s", user.Name)
+		}
+	})
+
+	
 }
